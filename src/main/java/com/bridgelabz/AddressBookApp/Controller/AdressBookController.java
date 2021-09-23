@@ -21,11 +21,11 @@ public class AdressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the POST Method.
      */
 	@PostMapping("/create")
-	public ResponseEntity<ResponseDTO>saveAddressBook(@RequestBody AddressBookDTO dto){
+	public ResponseEntity<String>saveAddressBook(@RequestBody AddressBookDTO dto){
 	
-		ResponseDTO responseDTO = new ResponseDTO("AddressBook Entity saved ", dto);
+	
 		
-		 return new ResponseEntity<ResponseDTO>(responseDTO ,HttpStatus.CREATED );
+		 return new ResponseEntity<String>("AddressBook Entity saved " ,HttpStatus.CREATED );
 	
 	}
 	/**
@@ -34,10 +34,10 @@ public class AdressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the GET Method.
      */
 	@GetMapping("/getdetails")
-	public ResponseEntity<ResponseDTO> getAddressBook(){
+	public ResponseEntity<String> getAddressBook(){
 		
 		
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<String>(" Retrived all data from address book ",HttpStatus.OK);
 	}
 	 /**
      * Purpose : Ability to fetch person details from Address Book based on a particular ID.
@@ -49,9 +49,9 @@ public class AdressBookController {
      */
 
 	@GetMapping("/getdetails/{id}") 
-	public ResponseEntity<ResponseDTO> getAddressBookByID(@PathVariable("id") int id){
+	public ResponseEntity<String> getAddressBookByID(@PathVariable("id") int id){
 	
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+		return new ResponseEntity<String>(" Retrived the data from address book ",HttpStatus.OK);
 	}
 	 /**
      * Purpose : Ability to update person details in Address Book based on a particular ID.
@@ -62,9 +62,9 @@ public class AdressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the PUT Method.
      */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<ResponseDTO> updateAddressBookByID(@PathVariable("id")int id, @RequestBody AddressBookDTO dto){
-		ResponseDTO responseDTO = new ResponseDTO(" Updated the data from address book ", dto);
-		return new ResponseEntity<ResponseDTO>(responseDTO,HttpStatus.OK);
+	public ResponseEntity<String> updateAddressBookByID(@PathVariable("id")int id, @RequestBody AddressBookDTO dto){
+	
+		return new ResponseEntity<String>(" Updated the data from address book ",HttpStatus.OK);
 		
 	}
 	/**
@@ -76,9 +76,9 @@ public class AdressBookController {
      */
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<ResponseDTO> deleteAddressbookByID(@PathVariable("id") int id){
+	public ResponseEntity<String> deleteAddressbookByID(@PathVariable("id") int id){
 
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+		return new ResponseEntity<String>(" Deleted the data from address book ",HttpStatus.OK);
 	}
 	
 }
