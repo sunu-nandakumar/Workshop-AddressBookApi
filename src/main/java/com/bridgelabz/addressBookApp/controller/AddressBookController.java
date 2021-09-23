@@ -1,15 +1,27 @@
 package com.bridgelabz.addressBookApp.controller;
 
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
+import com.bridgelabz.addressBookApp.dto.ResponseDTO;
+import com.bridgelabz.addressBookApp.entity.AddressBookData;
+import com.bridgelabz.addressBookApp.service.IAddressBookService;
 
 
 @RestController
 @RequestMapping("/addressbook")
 public class AddressBookController {
+	
+	@Autowired
+	IAddressBookService service;
+	;
+	
 	/**
      * Purpose : Ability to insert person details in Address Book.
      *
@@ -18,12 +30,11 @@ public class AddressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the POST Method.
      */
 	@PostMapping("/create")
-	public ResponseEntity<String>saveAddressBook(@RequestBody AddressBookDTO dto){
-	
-	
+	public ResponseEntity<ResponseDTO>saveAddressBook(@RequestBody AddressBookDTO dto){
+		AddressBookData entity = service.saveAddressBook(dto);
+		ResponseDTO responseDTO = new ResponseDTO("AddressBook Entity saved ", entity);
 		
-		 return new ResponseEntity<String>("AddressBook Entity saved " ,HttpStatus.CREATED );
-	
+		 return new ResponseEntity<ResponseDTO>(responseDTO , HttpStatus.CREATED );
 	}
 	/**
      * Purpose : Ability to fetch all person details from Address Book.
@@ -31,11 +42,10 @@ public class AddressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the GET Method.
      */
 	@GetMapping("/getdetails")
-	public ResponseEntity<String> getAddressBook(){
-		
-		
-		return new ResponseEntity<String>(" Retrived all data from address book ",HttpStatus.OK);
-	}
+	public ResponseEntity<ResponseDTO> getAddressBook(){
+		List<AddressBookData> addressBookList = service.getAddressBook();
+		ResponseDTO responseDTO = new ResponseDTO(" Retrived all data from address book ", addressBookList);
+		return new ResponseEntity<ResponseDTO>(responseDTO,HttpStatus.OK);}
 	 /**
      * Purpose : Ability to fetch person details from Address Book based on a particular ID.
      *
@@ -46,10 +56,10 @@ public class AddressBookController {
      */
 
 	@GetMapping("/getdetails/{id}") 
-	public ResponseEntity<String> getAddressBookByID(@PathVariable("id") int id){
-	
-		return new ResponseEntity<String>(" Retrived the data from address book ",HttpStatus.OK);
-	}
+	public ResponseEntity<ResponseDTO> getAddressBookByID(@PathVariable("id") int id){
+		List<AddressBookData> entityList = service.getAddressBook();
+		ResponseDTO responseDTO = new ResponseDTO(" Retrived all data from address book ", entityList);
+		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);}
 	 /**
      * Purpose : Ability to update person details in Address Book based on a particular ID.
      *
@@ -59,10 +69,13 @@ public class AddressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the PUT Method.
      */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<String> updateAddressBookByID(@PathVariable("id")int id, @RequestBody AddressBookDTO dto){
+	public ResponseEntity<ResponseDTO> updateAddressBookByID(@PathVariable("id")int id, @RequestBody AddressBookDTO dto){
 	
-		return new ResponseEntity<String>(" Updated the data from address book ",HttpStatus.OK);
-		
+		AddressBookData entity = (AddressBookData)  service.updateAddressBookByID(id, dto);
+		ResponseDTO responseDTO = new ResponseDTO(" Updated the data from address book ", dto);
+		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
+
+	
 	}
 	/**
      * Purpose : Ability to delete person details from Address Book based on a particular ID.
@@ -73,8 +86,9 @@ public class AddressBookController {
      */
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<String> deleteAddressbookByID(@PathVariable("id") int id){
+	public ResponseEntity<ResponseDTO> deleteAddressbookByID(@PathVariable("id") int id){
 
-		return new ResponseEntity<String>(" Deleted the data from address book ",HttpStatus.OK);
-	}
+		AddressBookData entity =  service.deleteAddressbookByID(id);
+		ResponseDTO responseDTO = new ResponseDTO(" Deleted the data from address book ", entity);
+		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);}
 }
