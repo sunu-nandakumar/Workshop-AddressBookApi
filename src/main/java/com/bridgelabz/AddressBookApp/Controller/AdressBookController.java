@@ -4,15 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.bridgelabz.AddressBookApp.AddressBookDTO.AddressBookDTO;
-import com.bridgelabz.AddressBookApp.AddressBookDTO.ResponseDTO;
+import com.bridgelabz.AddressBookApp.DTO.AddressBookDTO;
+import com.bridgelabz.AddressBookApp.DTO.ResponseDTO;
 
 
 
 
 @RestController
-@RequestMapping("/abapp")
-public class ABController {
+@RequestMapping("/addressbookapp")
+public class AdressBookController {
 	/**
      * Purpose : Ability to insert person details in Address Book.
      *
@@ -23,8 +23,9 @@ public class ABController {
 	@PostMapping("/create")
 	public ResponseEntity<ResponseDTO>saveAddressBook(@RequestBody AddressBookDTO dto){
 	
+		ResponseDTO responseDTO = new ResponseDTO("AddressBook Entity saved ", dto);
 		
-		 return new ResponseEntity<ResponseDTO>(HttpStatus.CREATED );
+		 return new ResponseEntity<ResponseDTO>(responseDTO ,HttpStatus.CREATED );
 	
 	}
 	/**
@@ -47,7 +48,7 @@ public class ABController {
      * @return responseDTO Object of ResponseDTO which returns the status of the GET Method.
      */
 
-	@GetMapping("/getByID/{id}") 
+	@GetMapping("/getdetails/{id}") 
 	public ResponseEntity<ResponseDTO> getAddressBookByID(@PathVariable("id") int id){
 	
 		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
@@ -60,10 +61,10 @@ public class ABController {
      *
      * @return responseDTO Object of ResponseDTO which returns the status of the PUT Method.
      */
-	@PutMapping("/updatingByID/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<ResponseDTO> updateAddressBookByID(@PathVariable("id")int id, @RequestBody AddressBookDTO dto){
-		
-		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
+		ResponseDTO responseDTO = new ResponseDTO(" Updated the data from address book ", dto);
+		return new ResponseEntity<ResponseDTO>(responseDTO,HttpStatus.OK);
 		
 	}
 	/**
@@ -74,7 +75,7 @@ public class ABController {
      * @return responseDTO Object of ResponseDTO which returns the status of the DELETE Method.
      */
 
-	@DeleteMapping("/deletebyid/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<ResponseDTO> deleteAddressbookByID(@PathVariable("id") int id){
 
 		return new ResponseEntity<ResponseDTO>(HttpStatus.OK);
