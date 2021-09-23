@@ -1,4 +1,4 @@
-package com.bridgelabz.AddressBookApp.dto;
+package org.bridgelabz.addressBookApp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

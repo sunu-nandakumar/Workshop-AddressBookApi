@@ -1,11 +1,10 @@
-package com.bridgelabz.AddressBookApp.controller;
+package org.bridgelabz.addressBookApp.controller;
 
+import org.bridgelabz.addressBookApp.dto.AddressBookDTO;
+import org.bridgelabz.addressBookApp.dto.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.bridgelabz.AddressBookApp.dto.AddressBookDTO;
-import com.bridgelabz.AddressBookApp.dto.ResponseDTO;
 
 
 
