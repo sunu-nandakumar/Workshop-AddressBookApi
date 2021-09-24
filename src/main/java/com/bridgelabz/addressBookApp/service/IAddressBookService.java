@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApp.entity.AddressBookData;
-import com.bridgelabz.addressBookApp.errorHandling.AddressBookNotFound;
+import com.bridgelabz.addressBookApp.exceptionHandling.AddressBookNotFound;
 
 
 

@@ -1,4 +1,4 @@
-package com.bridgelabz.addressBookApp.errorHandling;
+package com.bridgelabz.addressBookApp.exceptionHandling;
 
 
 
