@@ -57,9 +57,10 @@ public class AddressBookController {
 
 	@GetMapping("/getdetails/{id}") 
 	public ResponseEntity<ResponseDTO> getAddressBookByID(@PathVariable("id") int id){
-		List<AddressBookData> entityList = service.getAddressBook();
-		ResponseDTO responseDTO = new ResponseDTO(" Retrived all data from address book ", entityList);
-		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);}
+		AddressBookData entity = (AddressBookData)service.getAddressBookById(id);
+		ResponseDTO responseDTO = new ResponseDTO(" Retrived the data from address book ", entity);
+		return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+		}
 	 /**
      * Purpose : Ability to update person details in Address Book based on a particular ID.
      *
