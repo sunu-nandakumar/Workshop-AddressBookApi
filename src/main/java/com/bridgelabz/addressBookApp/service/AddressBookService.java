@@ -1,17 +1,18 @@
 package com.bridgelabz.addressBookApp.service;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApp.entity.AddressBookData;
+import com.bridgelabz.addressBookApp.errorHandling.AddressBookNotFound;
+
 import com.bridgelabz.addressBookApp.repository.IAddressBookRepository;
 
 @Service
-public class AddressBookService implements IAddressBookService{                                              
+public class AddressBookService implements IAddressBookService {
 	@Autowired
 	private IAddressBookRepository repository;
 
@@ -28,7 +29,7 @@ public class AddressBookService implements IAddressBookService{
 	@Override
 	public AddressBookData saveAddressBook(AddressBookDTO dto) {
 		// TODO Auto-generated method stub
-		AddressBookData entity = new AddressBookData();
+		AddressBookData entity = new AddressBookData(dto);
 		return repository.save(entity);
 	}
 
@@ -47,28 +48,35 @@ public class AddressBookService implements IAddressBookService{
 	 * particular ID.
 	 *
 	 * @param id On providing ID, the user-input is matched with the id value of the
-	 *           database. it returns the person details from Address
-	 *           Book.
+	 *           database. it returns the person details from Address Book.
 	 *
 	 * @return addressBookResponse Object of AddressBookDTO.
 	 */
 	@Override
-	public AddressBookData  getAddressBookById(int id) {
+	public AddressBookData getAddressBookById(int id) throws AddressBookNotFound {
 		// TODO Auto-generated method stub
-		return repository.getById(id);
+		Optional<AddressBookData> entity = repository.findById(id);
+		if (!entity.isPresent()) {
+			throw new AddressBookNotFound("Address book not found in the DB");
+		}
+		return entity.get();
 	}
+
 	/**
-     * Purpose : Ability to update person details in Address Book based on a particular ID.
-     *
-     * @param id On providing ID, the user-input is matched with the id value of the database.
-     *       
-     *
-     * @param addressBookDTO  Object of AddressBookDTO which will validate user-input
-     *                       and once valid, will pass it to the AddressBook entity.
-     *                       Finally, the user-input details gets stored in the Database.
-     *
-     * @return addressBookResponse Object of AddressBookDTO.
-     */
+	 * Purpose : Ability to update person details in Address Book based on a
+	 * particular ID.
+	 *
+	 * @param id             On providing ID, the user-input is matched with the id
+	 *                       value of the database.
+	 * 
+	 *
+	 * @param addressBookDTO Object of AddressBookDTO which will validate user-input
+	 *                       and once valid, will pass it to the AddressBook entity.
+	 *                       Finally, the user-input details gets stored in the
+	 *                       Database.
+	 *
+	 * @return addressBookResponse Object of AddressBookDTO.
+	 */
 	@Override
 	public AddressBookData updateAddressBookByID(int id, AddressBookDTO dto) {
 		AddressBookData entity = repository.findById(id).get();
@@ -100,14 +108,16 @@ public class AddressBookService implements IAddressBookService{
 
 		return repository.save(entity);
 	}
-	 /**
-     * Purpose : Ability to delete person details from Address Book based on a particular ID.
-     *
-     * @param id On providing ID, the user-input is matched with the id value of the database.
-     *           it deletes the person details from Address Book.
-     *
-     * @return addressBookResponse Object of AddressBookDTO.
-     */
+
+	/**
+	 * Purpose : Ability to delete person details from Address Book based on a
+	 * particular ID.
+	 *
+	 * @param id On providing ID, the user-input is matched with the id value of the
+	 *           database. it deletes the person details from Address Book.
+	 *
+	 * @return addressBookResponse Object of AddressBookDTO.
+	 */
 	@Override
 	public AddressBookData deleteAddressbookByID(int id) {
 		// TODO Auto-generated method stub

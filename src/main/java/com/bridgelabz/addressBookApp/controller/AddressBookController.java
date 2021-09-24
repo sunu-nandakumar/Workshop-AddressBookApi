@@ -3,6 +3,8 @@ package com.bridgelabz.addressBookApp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApp.dto.ResponseDTO;
 import com.bridgelabz.addressBookApp.entity.AddressBookData;
+import com.bridgelabz.addressBookApp.errorHandling.AddressBookNotFound;
 import com.bridgelabz.addressBookApp.service.IAddressBookService;
 
 
@@ -30,7 +33,7 @@ public class AddressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the POST Method.
      */
 	@PostMapping("/create")
-	public ResponseEntity<ResponseDTO>saveAddressBook(@RequestBody AddressBookDTO dto){
+	public ResponseEntity<ResponseDTO>saveAddressBook(@Valid @RequestBody AddressBookDTO dto){
 		AddressBookData entity = service.saveAddressBook(dto);
 		ResponseDTO responseDTO = new ResponseDTO("AddressBook Entity saved ", entity);
 		
@@ -56,10 +59,11 @@ public class AddressBookController {
      */
 
 	@GetMapping("/getdetails/{id}") 
-	public ResponseEntity<ResponseDTO> getAddressBookByID(@PathVariable("id") int id){
-		List<AddressBookData> entityList = service.getAddressBook();
-		ResponseDTO responseDTO = new ResponseDTO(" Retrived all data from address book ", entityList);
-		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);}
+	public ResponseEntity<ResponseDTO> getAddressBookByID(@PathVariable("id") int id) throws AddressBookNotFound {
+		AddressBookData entity = (AddressBookData)service.getAddressBookById(id);
+		ResponseDTO responseDTO = new ResponseDTO(" Retrived the data from address book ", entity);
+		return new ResponseEntity<>(responseDTO,HttpStatus.OK);
+		}
 	 /**
      * Purpose : Ability to update person details in Address Book based on a particular ID.
      *
@@ -69,7 +73,7 @@ public class AddressBookController {
      * @return responseDTO Object of ResponseDTO which returns the status of the PUT Method.
      */
 	@PutMapping("/update/{id}")
-	public ResponseEntity<ResponseDTO> updateAddressBookByID(@PathVariable("id")int id, @RequestBody AddressBookDTO dto){
+	public ResponseEntity<ResponseDTO> updateAddressBookByID(@Valid @PathVariable("id")int id, @RequestBody AddressBookDTO dto){
 	
 		AddressBookData entity = (AddressBookData)  service.updateAddressBookByID(id, dto);
 		ResponseDTO responseDTO = new ResponseDTO(" Updated the data from address book ", dto);
