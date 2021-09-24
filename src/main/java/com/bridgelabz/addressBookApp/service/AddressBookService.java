@@ -28,7 +28,7 @@ public class AddressBookService implements IAddressBookService{
 	@Override
 	public AddressBookData saveAddressBook(AddressBookDTO dto) {
 		// TODO Auto-generated method stub
-		AddressBookData entity = new AddressBookData();
+		AddressBookData entity = new AddressBookData(dto);
 		return repository.save(entity);
 	}
 
