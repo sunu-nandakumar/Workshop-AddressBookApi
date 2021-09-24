@@ -1,19 +1,23 @@
 package com.bridgelabz.addressBookApp.service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApp.entity.AddressBookData;
-import com.bridgelabz.addressBookApp.exceptionHandling.AddressBookNotFound;
 import com.bridgelabz.addressBookApp.repository.IAddressBookRepository;
 
 @Service
 public class AddressBookService implements IAddressBookService {
 	@Autowired
 	private IAddressBookRepository repository;
+	@Autowired
+	ModelMapper modelMapper;
 
 	/**
 	 * Purpose : Ability to insert person details in Address Book.
@@ -26,10 +30,11 @@ public class AddressBookService implements IAddressBookService {
 	 * @return addressBookDTO Object of AddressBookDTO.
 	 */
 	@Override
-	public AddressBookData saveAddressBook(AddressBookDTO dto) {
+	public AddressBookDTO saveAddressBook(AddressBookDTO dto) {
 		// TODO Auto-generated method stub
-		AddressBookData entity = new AddressBookData(dto);
-		return repository.save(entity);
+		AddressBookData entity = modelMapper.map(dto, AddressBookData.class);
+		repository.save(entity);
+		return dto;
 	}
 
 	/**
@@ -37,9 +42,10 @@ public class AddressBookService implements IAddressBookService {
 	 *
 	 * @return List<AddressBookDTO>.
 	 */
-	public List<AddressBookData> getAddressBook() {
-		// TODO Auto-generated method stub
-		return repository.findAll();
+
+	public List<AddressBookDTO> getAddressBook() { // TODO Auto-generated methodstub
+		return repository.findAll().stream().map(addressBook -> modelMapper.map(addressBook, AddressBookDTO.class))
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -51,14 +57,13 @@ public class AddressBookService implements IAddressBookService {
 	 *
 	 * @return addressBookResponse Object of AddressBookDTO.
 	 */
+
 	@Override
-	public AddressBookData getAddressBookById(int id) throws AddressBookNotFound {
-		// TODO Auto-generated method stub
+	public AddressBookDTO getAddressBookById(int id) 
+	{ // TODO Auto-generated method stub
 		Optional<AddressBookData> entity = repository.findById(id);
-		if (!entity.isPresent()) {
-			throw new AddressBookNotFound("Address book not found in the DB");
-		}
-		return entity.get();
+		AddressBookDTO dto = modelMapper.map(entity, AddressBookDTO.class);
+		return dto;
 	}
 
 	/**
@@ -76,36 +81,17 @@ public class AddressBookService implements IAddressBookService {
 	 *
 	 * @return addressBookResponse Object of AddressBookDTO.
 	 */
+
 	@Override
-	public AddressBookData updateAddressBookByID(int id, AddressBookDTO dto) {
+	public AddressBookDTO updateAddressBookByID(int id, AddressBookDTO dto) {
 		AddressBookData entity = repository.findById(id).get();
 
-		if (Objects.nonNull(dto.getName()) && !"".equalsIgnoreCase(dto.getName())) {
-			entity.setName(dto.getName());
-		}
-
-		if (Objects.nonNull(dto.getAddress()) && !"".equalsIgnoreCase(dto.getAddress())) {
-			entity.setAddress(dto.getAddress());
-		}
-
-		if (Objects.nonNull(dto.getCity()) && !"".equalsIgnoreCase(dto.getCity())) {
-			entity.setCity(dto.getCity());
-		}
-
-		if (Objects.nonNull(dto.getState()) && !"".equalsIgnoreCase(dto.getState())) {
-			entity.setState(dto.getState());
-		}
-
-		if (Objects.nonNull(dto.getZip()) && !"".equalsIgnoreCase(dto.getZip()))
-			entity.setZip(dto.getZip());
-
-		if (Objects.nonNull(dto.getEmail()) && !"".equalsIgnoreCase(dto.getEmail()))
-			entity.setEmail(dto.getEmail());
-
-		if (Objects.nonNull(dto.getPhoneNo()) && !"".equalsIgnoreCase(dto.getPhoneNo()))
-			entity.setPhoneNo(dto.getPhoneNo());
-
-		return repository.save(entity);
+		String[] ignoreFields = {"id","name"};
+		 BeanUtils.copyProperties(dto, entity, ignoreFields);
+		 repository.save(entity);
+		 AddressBookDTO updatedDTO = modelMapper.map(entity, AddressBookDTO.class);
+		 return updatedDTO;
+		
 	}
 
 	/**
@@ -117,11 +103,11 @@ public class AddressBookService implements IAddressBookService {
 	 *
 	 * @return addressBookResponse Object of AddressBookDTO.
 	 */
-	@Override
-	public AddressBookData deleteAddressbookByID(int id) {
-		// TODO Auto-generated method stub
-		repository.deleteById(id);
-		return null;
+	
+	  @Override public AddressBookDTO deleteAddressbookByID(int id) { // TODO
+	  repository.deleteById(id); 
+	  return null;
+	  
+	  }
 
-	}
 }

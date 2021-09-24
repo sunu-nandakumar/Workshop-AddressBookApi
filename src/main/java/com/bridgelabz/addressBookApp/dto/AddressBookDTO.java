@@ -3,12 +3,16 @@ package com.bridgelabz.addressBookApp.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
+
+
 import lombok.*;;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressBookDTO {
+	
+	private int id;
 	@NotEmpty(message = "Person Name cannot be null")
 	@Pattern(regexp = "^[A-Z][a-zA-Z\\s]{2,}$", message = "Person Name Invalid")
 	private String name;
@@ -27,5 +31,7 @@ public class AddressBookDTO {
 	@NotEmpty(message = "PhoneNo cannot be null")
 	@Pattern(regexp = "^[0-9]{10}$", message = "Person PhoneNo Invalid")
 	private String phoneNo;
+	
+	
 
 }

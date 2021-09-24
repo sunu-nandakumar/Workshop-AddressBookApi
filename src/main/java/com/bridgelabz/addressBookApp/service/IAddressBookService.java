@@ -2,25 +2,25 @@ package com.bridgelabz.addressBookApp.service;
 
 import java.util.*;
 
+import javax.validation.Valid;
 
 import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
-import com.bridgelabz.addressBookApp.entity.AddressBookData;
-import com.bridgelabz.addressBookApp.exceptionHandling.AddressBookNotFound;
+
 
 
 
 
 public interface IAddressBookService {
 	
-	public AddressBookData saveAddressBook(AddressBookDTO abDTO);
+	public AddressBookDTO saveAddressBook(@Valid AddressBookDTO dto);
 
-	public List<AddressBookData> getAddressBook();
+	public List<AddressBookDTO> getAddressBook();
 
-	public AddressBookData getAddressBookById(int id) throws AddressBookNotFound;
+	public AddressBookDTO getAddressBookById(int id) ;
 
-	public AddressBookData updateAddressBookByID(int id, AddressBookDTO dto);
+	public AddressBookDTO updateAddressBookByID(int id, AddressBookDTO dto);
 
-	public AddressBookData deleteAddressbookByID(int id);
+	public AddressBookDTO deleteAddressbookByID(int id);
 
 
 

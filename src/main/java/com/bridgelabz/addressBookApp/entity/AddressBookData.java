@@ -2,7 +2,7 @@ package com.bridgelabz.addressBookApp.entity;
 
 import javax.persistence.*;
 
-import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
+//import com.bridgelabz.addressBookApp.dto.AddressBookDTO;
 
 import lombok.*;
 
@@ -23,14 +23,5 @@ public class AddressBookData {
     private String email;
     private String phoneNo;
     
-    public AddressBookData(AddressBookDTO dto) {
-    	this.name =dto.getName();
-        this.address=dto.getAddress();
-        this.city=dto.getCity();
-        this.state=dto.getState();
-        this.zip=dto.getZip();
-        this.email=dto.getEmail();
-        this.phoneNo=dto.getPhoneNo();
-    }
-
+	
 }
